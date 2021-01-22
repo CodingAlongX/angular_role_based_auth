@@ -1,6 +1,6 @@
 export class Role {
-  static ADMIN = 'Admin';
-  static AUTHOR = 'Author';
-  static EDITOR = 'Editor';
-  static USER = 'User';
+  ADMIN = 'Admin';
+  AUTHOR = 'Author';
+  EDITOR = 'Editor';
+  USER = 'User';
 }

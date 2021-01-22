@@ -1,1 +1,71 @@
-<p>registration works!</p>
+<div class="row mt-4">
+  <div class="col-md-6">
+    <div class="row" style="height: 450px">
+      <div class="col-md-12">
+        <strong>Register</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <form (submit)="onSubmit()" [formGroup]="form">
+      <div class="form-group">
+        <label>Username</label>
+        <input class="form-control" formControlName="userName">
+        <label *ngIf="form.get('userName').touched && form.get('userName').errors?.required" class="text-danger">
+          This field is mandatory
+        </label>
+
+        <label>Email</label>
+        <input class="form-control" formControlName="email">
+        <label *ngIf="form.get('email').touched && form.get('email').errors?.email" class="text-danger">
+          Invalid email address
+        </label>
+
+        <label>First Name</label>
+        <input class="form-control" formControlName="firstName">
+
+        <label>Last Name</label>
+        <input class="form-control" formControlName="lastName">
+
+        <label>Roles</label>
+        <select class="form-control" formControlName="roles" multiple>
+          <option value="{{role.USER}}">{{role.USER}}</option>
+          <option value="{{role.AUTHOR}}">{{role.AUTHOR}}</option>
+          <option value="{{role.EDITOR}}">{{role.EDITOR}}</option>
+          <option value="{{role.ADMIN}}">{{role.ADMIN}}</option>
+        </select>
+
+        <div class="form-group" formGroupName="passwords">
+          <label>Password</label>
+          <input class="form-control" formControlName="password" type="password">
+          <label *ngIf="form.get('passwords.password').touched && form.get('passwords.password').errors?.required"
+                 class="text-danger">
+            This field is mandatory
+          </label>
+          <label *ngIf="form.get('passwords.password').touched && form.get('passwords.password').errors?.minlength"
+                 class="text-danger">
+            Password must have to be at least 6 characters </label>
+
+          <label>Confirm Password</label>
+          <input class="form-control" formControlName="confirmPassword" type="password">
+          <label
+            *ngIf="form.get('passwords.confirmPassword').touched && form.get('passwords.confirmPassword').errors?.required"
+            class="text-danger">
+            This field is mandatory
+          </label>
+          <label
+            *ngIf="form.get('passwords.confirmPassword').touched && form.get('passwords.confirmPassword').errors?.passwordMismatch"
+            class="text-danger">
+            Password doesn't match </label>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-8 offset-md-2">
+            <button [disabled]="!form.valid" class="btn btn-primary btn-lg btn-block" type="submit">Register</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
