@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Role} from '../models/role.model';
+import {AuthService} from '../services/auth.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-registration',
@@ -16,14 +18,14 @@ export class RegistrationComponent implements OnInit {
     email: ['', Validators.email],
     firstName: [''],
     lastName: [''],
-    roles: [''],
+    roles: [[]],
     passwords: this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
     }, {validators: [this.comparePasswords]})
   });
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -43,6 +45,27 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.form.value);
+
+    this.authService.register(this.form).subscribe(
+      (response: any) => {
+        this.form.reset();
+        this.toastr.success(response.message);
+      },
+      error => {
+        error.error.forEach(e => {
+            switch (e.code) {
+              case 'DuplicateUserName':
+                this.toastr.error('Username is already taken', 'Registration failed');
+                break;
+              default:
+                this.toastr.error(e.message, 'Registration failed');
+                break;
+
+            }
+          }
+        );
+      });
   }
+
+
 }
