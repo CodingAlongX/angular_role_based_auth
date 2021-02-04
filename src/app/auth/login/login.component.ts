@@ -26,5 +26,15 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(form: NgForm): void {
+    this.authService.login(form.value).subscribe((result: any) => {
+      localStorage.setItem('token', result.token);
+      this.router.navigateByUrl('/');
+    }, (error) => {
+      if (error.status === 400) {
+        this.toastr.error('Incorrect username or password', 'Authentication failed');
+      } else {
+        console.log(error);
+      }
+    });
   }
 }

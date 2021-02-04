@@ -28,4 +28,8 @@ export class AuthService {
     return this.http.post(this.BASE_URI + '/auth/register', body);
   }
 
+  login(formData): any {
+    return this.http.post(this.BASE_URI + '/auth/login', formData);
+  }
+
 }
